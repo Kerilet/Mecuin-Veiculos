@@ -1,0 +1,4 @@
+prisma/dev.db
+uploads
+prisma/dev.db-journal
+node_modules

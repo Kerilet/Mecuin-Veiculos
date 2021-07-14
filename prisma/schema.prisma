@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:konodioda@localhost:3306/mecuin"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Brand {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String   @unique
+  models    Model[]
+}
+
+model Model {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  title     String
+  brand     Brand     @relation(fields: [brandId], references: [id])
+  brandId   Int
+  versions  Version[]
+
+  @@unique([brandId, title], name: "brandId")
+}
+
+model Version {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  title     String
+  model     Model     @relation(fields: [modelId], references: [id])
+  modelId   Int
+  vehicles  Vehicle[]
+
+  @@unique([modelId, title], name: "modelId")
+}
+
+model Vehicle {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  version      Version    @relation(fields: [versionId], references: [id])
+  versionId    Int
+  color        Color      @relation(fields: [colorId], references: [id])
+  colorId      Int
+  mileage      Float
+  licensePlate String
+  renavam      String     @unique
+  gearshift    Gearshift  @relation(fields: [gearshiftId], references: [id])
+  gearshiftId  Int
+  fuel         Fuel
+  modelYear    Int
+  builtYear    Int
+  price        Float
+  optionals    Optional[]
+  media        Media[]
+  form         Form[]
+
+  @@unique([licensePlate, versionId], name: "licensePlate")
+}
+
+enum Fuel {
+  GASOLINE
+  ALCOHOL
+  DIESEL
+  ELETRIC
+  FLEX
+}
+
+model Gearshift {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  title     String    @unique
+  vehicles  Vehicle[]
+}
+
+model Color {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  title     String    @unique
+  vehicles  Vehicle[]
+}
+
+model Media {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String?
+  url       String
+  type      Type
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+  vehicleId Int
+}
+
+enum Type {
+  PHOTO
+  VIDEO
+}
+
+model Optional {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  title     String
+  vehicle   Vehicle[]
+}
+
+model Form {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  firstName   String
+  lastName    String
+  phoneNumber String
+  email       String
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  vehicleId   Int
+}
+
+// agora que já fizemos o Color,
+// faça o endpoint de Câmbios, Marcas, Modelos e o de Versões, fazendo 5 items 
+// quando for fazer o seed.
