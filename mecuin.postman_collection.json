@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "497e2346-4e21-435b-9325-5dcb31698a52",
+		"name": "Mecuin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET colors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Get colors must has Branco', () => {",
+							"    pm.expect(pm.response.json()[0].title).to.eq('Branco');",
+							"});",
+							"",
+							"pm.test('Status code must be 200', () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/colors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"colors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET color",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Get colors must has Branco', () => {",
+							"    pm.expect(pm.response.json().title).to.eq('Branco');",
+							"    pm.expect(pm.response.json().id).to.eq(1);",
+							"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+							"});",
+							"",
+							"pm.test('Status code must be 200', () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/colors/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"colors",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create color",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Should to create marsala color', () => {",
+							"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+							"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
+							"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+							"});",
+							"",
+							"pm.test('Status code must be 201', () => {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Ciano\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/colors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"colors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update color",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Should update color branco', () => {",
+							"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
+							"    pm.expect(pm.response.json().id).to.eq(6);",
+							"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+							"});",
+							"",
+							"pm.test('Status code must be 200', () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Azul calcinha\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/colors/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"colors",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a color",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Should body be empty', () => {",
+							"    pm.expect(pm.response.body).to.be.undefined;",
+							"});",
+							"",
+							"pm.test('Status code must be 204', () => {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/colors/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"colors",
+						"6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

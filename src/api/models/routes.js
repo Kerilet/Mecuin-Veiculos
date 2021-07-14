@@ -1,10 +1,10 @@
 /* eslint-disable eol-last */
-const Router = require('@koa/router')
-const create = require('./controllers/create.js.js')
-const del = require('./controllers/delete.js.js')
-const findAll = require('./controllers/findAll.js.js')
-const findOne = require('./controllers/findOne.js.js')
-const update = require('./controllers/update.js.js')
+const Router = require('@koa/router');
+const create = require('./controllers/create');
+const del = require('./controllers/delete');
+const findAll = require('./controllers/findAll');
+const findOne = require('./controllers/findOne');
+const update = require('./controllers/update');
 
 const router = new Router();
 
