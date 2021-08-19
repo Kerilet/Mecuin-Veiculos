@@ -1,4 +1,5 @@
-const prisma = require('../../../core/prismaConfig')
+/* eslint-disable radix */
+const prisma = require('../../../core/prismaConfig');
 
 module.exports = async (ctx) => {
   const urlId = Number.parseInt(ctx.params.id, 0);

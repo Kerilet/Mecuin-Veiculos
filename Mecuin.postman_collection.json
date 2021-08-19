@@ -9,6 +9,54 @@
 			"name": "Colors",
 			"item": [
 				{
+					"name": "Create color",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should to create ciano color', () => {",
+									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
+									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+									"    postman.setEnvironmentVariable(\"colorId\", pm.response.json().id);",
+									"});",
+									"",
+									"pm.test('Status code must be 201', () => {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Ciano\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/colors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"colors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GET colors",
 					"event": [
 						{
@@ -45,62 +93,16 @@
 					"response": []
 				},
 				{
-					"name": "Create color",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Should to create marsala color', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
-									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
-									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
-									"});",
-									"",
-									"pm.test('Status code must be 201', () => {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Ciano\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3002/colors",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3002",
-							"path": [
-								"colors"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "GET color",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Branco');",
-									"    pm.expect(pm.response.json().id).to.eq(1);",
+									"pm.test('Get colors must has Ciano', () => {",
+									"    const colorId = parseInt(postman.getEnvironmentVariable('colorId'));",
+									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"    pm.expect(pm.response.json().id).to.eq(colorId);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -116,7 +118,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/colors/1",
+							"raw": "http://localhost:3002/colors/{{colorId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -124,7 +126,7 @@
 							"port": "3002",
 							"path": [
 								"colors",
-								"1"
+								"{{colorId}}"
 							]
 						}
 					},
@@ -137,9 +139,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should update color branco', () => {",
+									"pm.test('Should update color azul calcinha', () => {",
+									"    const colorId = parseInt(postman.getEnvironmentVariable('colorId'));",
 									"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
-									"    pm.expect(pm.response.json().id).to.eq(6);",
+									"    pm.expect(pm.response.json().id).to.eq(colorId);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -164,7 +167,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/colors/6",
+							"raw": "http://localhost:3002/colors/{{colorId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -172,7 +175,7 @@
 							"port": "3002",
 							"path": [
 								"colors",
-								"6"
+								"{{colorId}}"
 							]
 						}
 					},
@@ -201,7 +204,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/colors/6",
+							"raw": "http://localhost:3002/colors/{{colorId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -209,7 +212,7 @@
 							"port": "3002",
 							"path": [
 								"colors",
-								"6"
+								"{{colorId}}"
 							]
 						}
 					},
@@ -221,52 +224,17 @@
 			"name": "Versions",
 			"item": [
 				{
-					"name": "GET versions",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json()[0].title).to.eq('Branco');",
-									"});",
-									"",
-									"pm.test('Status code must be 200', () => {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3002/versions",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3002",
-							"path": [
-								"versions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create version",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should to create marsala color', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"pm.test('Should to create Supreme version', () => {",
+									"    pm.expect(pm.response.json().title).to.eq('Supreme');",
 									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+									"    postman.setEnvironmentVariable(\"versionId\", pm.response.json().id);",
 									"});",
 									"",
 									"pm.test('Status code must be 201', () => {",
@@ -282,13 +250,49 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Ciano\"\n}",
+							"raw": "{\n    \"title\": \"Supreme\",\n    \"modelId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
+						"url": {
+							"raw": "http://localhost:3002/versions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET versions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Get versions must be Way 13', () => {",
+									"    pm.expect(pm.response.json()[0].title).to.eq('Way 13');",
+									"});",
+									"",
+									"pm.test('Status code must be 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "http://localhost:3002/versions",
 							"protocol": "http",
@@ -310,9 +314,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Branco');",
-									"    pm.expect(pm.response.json().id).to.eq(1);",
+									"pm.test('Get versions must has Supreme', () => {",
+									"    const versionId = parseInt(postman.getEnvironmentVariable('versionId'));",
+									"    pm.expect(pm.response.json().id).to.eq(versionId);",
+									"    pm.expect(pm.response.json().title).to.eq('Supreme');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -328,15 +333,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/version/1",
+							"raw": "http://localhost:3002/versions/{{versionId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"version",
-								"1"
+								"versions",
+								"{{versionId}}"
 							]
 						}
 					},
@@ -349,9 +354,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should update color branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
-									"    pm.expect(pm.response.json().id).to.eq(6);",
+									"pm.test('Should update version Supreme', () => {",
+									"    const versionId = parseInt(postman.getEnvironmentVariable('versionId'));",
+									"    pm.expect(pm.response.json().id).to.eq(versionId);",
+									"    pm.expect(pm.response.json().title).to.eq('Made in Heaven');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -368,7 +374,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Azul calcinha\"\n}",
+							"raw": "{\n    \"title\": \"Made in Heaven\",\n    \"modelId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -376,15 +382,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/version/6",
+							"raw": "http://localhost:3002/versions/{{versionId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"version",
-								"6"
+								"versions",
+								"{{versionId}}"
 							]
 						}
 					},
@@ -413,15 +419,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/version/6",
+							"raw": "http://localhost:3002/versions/{{versionId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"version",
-								"6"
+								"versions",
+								"{{versionId}}"
 							]
 						}
 					},
@@ -433,52 +439,17 @@
 			"name": "Brands",
 			"item": [
 				{
-					"name": "GET brands",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json()[0].title).to.eq('Branco');",
-									"});",
-									"",
-									"pm.test('Status code must be 200', () => {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3002/brands",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3002",
-							"path": [
-								"brands"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create brand",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should to create marsala color', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"pm.test('Should to create Hyundai brand', () => {",
+									"    pm.expect(pm.response.json().title).to.eq('Hyundai');",
 									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+									"    postman.setEnvironmentVariable(\"brandId\", pm.response.json().id);",
 									"});",
 									"",
 									"pm.test('Status code must be 201', () => {",
@@ -494,13 +465,49 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Ciano\"\n}",
+							"raw": "{\n    \"title\": \"Hyundai\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
+						"url": {
+							"raw": "http://localhost:3002/brands",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET brands",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Get colors must has Fiat', () => {",
+									"    pm.expect(pm.response.json()[0].title).to.eq('Fiat');",
+									"});",
+									"",
+									"pm.test('Status code must be 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "http://localhost:3002/brands",
 							"protocol": "http",
@@ -522,9 +529,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Branco');",
-									"    pm.expect(pm.response.json().id).to.eq(1);",
+									"pm.test('Get brand must have Hyundai', () => {",
+									"    const brandId = parseInt(postman.getEnvironmentVariable('brandId'));",
+									"    pm.expect(pm.response.json().id).to.eq(brandId);",
+									"    pm.expect(pm.response.json().title).to.eq('Hyundai');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -540,7 +548,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/brands/1",
+							"raw": "http://localhost:3002/brands/{{brandId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -548,7 +556,7 @@
 							"port": "3002",
 							"path": [
 								"brands",
-								"1"
+								"{{brandId}}"
 							]
 						}
 					},
@@ -561,9 +569,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should update color branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
-									"    pm.expect(pm.response.json().id).to.eq(6);",
+									"pm.test('Should update brand Hyundai', () => {",
+									"    const brandId = parseInt(postman.getEnvironmentVariable('brandId'));",
+									"    pm.expect(pm.response.json().id).to.eq(brandId);",
+									"    pm.expect(pm.response.json().title).to.eq('Killer Queen');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -580,7 +589,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Azul calcinha\"\n}",
+							"raw": "{\n    \"title\": \"Killer Queen\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -588,7 +597,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/brands/6",
+							"raw": "http://localhost:3002/brands/{{brandId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -596,7 +605,7 @@
 							"port": "3002",
 							"path": [
 								"brands",
-								"6"
+								"{{brandId}}"
 							]
 						}
 					},
@@ -625,7 +634,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/brands/6",
+							"raw": "http://localhost:3002/brands/{{brandId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -633,7 +642,7 @@
 							"port": "3002",
 							"path": [
 								"brands",
-								"6"
+								"{{brandId}}"
 							]
 						}
 					},
@@ -645,52 +654,17 @@
 			"name": "Gearshifts",
 			"item": [
 				{
-					"name": "GET gearshift",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json()[0].title).to.eq('Branco');",
-									"});",
-									"",
-									"pm.test('Status code must be 200', () => {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3002/gearshifts",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3002",
-							"path": [
-								"gearshifts"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create gearshift",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should to create marsala color', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"pm.test('Should to create AutoV2 gearshift', () => {",
+									"    pm.expect(pm.response.json().title).to.eq('AutoV2');",
 									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+									"    postman.setEnvironmentVariable(\"gearshiftId\", pm.response.json().id);",
 									"});",
 									"",
 									"pm.test('Status code must be 201', () => {",
@@ -706,7 +680,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Ciano\"\n}",
+							"raw": "{\n    \"title\": \"AutoV2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -728,15 +702,52 @@
 					"response": []
 				},
 				{
+					"name": "GET gearshifts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Get colors must has Automático', () => {",
+									"    pm.expect(pm.response.json()[0].title).to.eq('Automático');",
+									"});",
+									"",
+									"pm.test('Status code must be 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gearshifts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gearshifts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GET gearshift",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Branco');",
-									"    pm.expect(pm.response.json().id).to.eq(1);",
+									"pm.test('Get colors must has AutoV2', () => {",
+									"    const gearshiftId = parseInt(postman.getEnvironmentVariable('gearshiftId'));",
+									"    pm.expect(pm.response.json().id).to.eq(gearshiftId);",
+									"    pm.expect(pm.response.json().title).to.eq('AutoV2');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -752,7 +763,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/gearshifts/1",
+							"raw": "http://localhost:3002/gearshifts/{{gearshiftId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -760,7 +771,7 @@
 							"port": "3002",
 							"path": [
 								"gearshifts",
-								"1"
+								"{{gearshiftId}}"
 							]
 						}
 					},
@@ -773,9 +784,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should update color branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
-									"    pm.expect(pm.response.json().id).to.eq(6);",
+									"pm.test('Should update gearshift AutoV2', () => {",
+									"    const gearshiftId = parseInt(postman.getEnvironmentVariable('gearshiftId'));",
+									"    pm.expect(pm.response.json().id).to.eq(gearshiftId);",
+									"    pm.expect(pm.response.json().title).to.eq('Dirty Deeds Done Dirt Cheap');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -792,7 +804,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Azul calcinha\"\n}",
+							"raw": "{\n    \"title\": \"Dirty Deeds Done Dirt Cheap\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -800,7 +812,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/gearshifts/6",
+							"raw": "http://localhost:3002/gearshifts/{{gearshiftId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -808,7 +820,7 @@
 							"port": "3002",
 							"path": [
 								"gearshifts",
-								"6"
+								"{{gearshiftId}}"
 							]
 						}
 					},
@@ -837,15 +849,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/gearshift/6",
+							"raw": "http://localhost:3002/gearshifts/{{gearshiftId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3002",
 							"path": [
-								"gearshift",
-								"6"
+								"gearshifts",
+								"{{gearshiftId}}"
 							]
 						}
 					},
@@ -857,52 +869,17 @@
 			"name": "Models",
 			"item": [
 				{
-					"name": "GET models",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json()[0].title).to.eq('Branco');",
-									"});",
-									"",
-									"pm.test('Status code must be 200', () => {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3002/models",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3002",
-							"path": [
-								"models"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create model",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should to create marsala color', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Ciano');",
+									"pm.test('Should to create Chronos model', () => {",
+									"    pm.expect(pm.response.json().title).to.eq('Chronos');",
 									"    pm.expect(pm.response.json().id).to.be.greaterThan(5);",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
+									"    postman.setEnvironmentVariable(\"modelId\", pm.response.json().id);",
 									"});",
 									"",
 									"pm.test('Status code must be 201', () => {",
@@ -918,13 +895,49 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Ciano\"\n}",
+							"raw": "{\n    \"title\": \"Chronos\",\n    \"brandId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
+						"url": {
+							"raw": "http://localhost:3002/models",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET models",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Get models must has Uno', () => {",
+									"    pm.expect(pm.response.json()[0].title).to.eq('Uno');",
+									"});",
+									"",
+									"pm.test('Status code must be 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "http://localhost:3002/models",
 							"protocol": "http",
@@ -946,9 +959,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Get colors must has Branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Branco');",
-									"    pm.expect(pm.response.json().id).to.eq(1);",
+									"pm.test('Get model must have Chronos', () => {",
+									"    const modelId = parseInt(postman.getEnvironmentVariable('modelId'));",
+									"    pm.expect(pm.response.json().id).to.eq(modelId);",
+									"    pm.expect(pm.response.json().title).to.eq('Chronos');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -964,7 +978,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/models/1",
+							"raw": "http://localhost:3002/models/{{modelId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -972,7 +986,7 @@
 							"port": "3002",
 							"path": [
 								"models",
-								"1"
+								"{{modelId}}"
 							]
 						}
 					},
@@ -985,9 +999,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Should update color branco', () => {",
-									"    pm.expect(pm.response.json().title).to.eq('Azul calcinha');",
-									"    pm.expect(pm.response.json().id).to.eq(6);",
+									"pm.test('Should update model Chronos', () => {",
+									"    const modelId = parseInt(postman.getEnvironmentVariable('modelId'));",
+									"    pm.expect(pm.response.json().id).to.eq(modelId);",
+									"    pm.expect(pm.response.json().title).to.eq('King Crimson');",
 									"    pm.expect(pm.response.json().createdAt).to.be.a('string');",
 									"});",
 									"",
@@ -1004,7 +1019,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Azul calcinha\"\n}",
+							"raw": "{\n    \"title\": \"King Crimson\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1012,7 +1027,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/models/6",
+							"raw": "http://localhost:3002/models/{{modelId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1020,7 +1035,7 @@
 							"port": "3002",
 							"path": [
 								"models",
-								"6"
+								"{{modelId}}"
 							]
 						}
 					},
@@ -1049,7 +1064,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/models/6",
+							"raw": "http://localhost:3002/models/{{modelId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1057,7 +1072,7 @@
 							"port": "3002",
 							"path": [
 								"models",
-								"6"
+								"{{modelId}}"
 							]
 						}
 					},
